@@ -246,10 +246,17 @@ Return<void> Health::getHealthInfo(getHealthInfo_cb _hidl_cb) {
     using android::hardware::health::V1_0::hal_conversion::convertToHealthInfo;
 
     updateAndNotify(nullptr);
-    struct android::BatteryProperties p = getBatteryProperties(battery_monitor_.get());
+
+    struct android::BatteryProperties props;
+    props.chargerAcOnline = true;
+    props.batteryPresent = true;
+    props.batteryStatus = android::BATTERY_STATUS_CHARGING;
+    props.batteryHealth = android::BATTERY_HEALTH_GOOD;
+    props.batteryFullCharge = 100;
+    props.batteryLevel = 100;
 
     V1_0::HealthInfo batteryInfo;
-    convertToHealthInfo(&p, batteryInfo);
+    convertToHealthInfo(&props, batteryInfo);
 
     std::vector<StorageInfo> info;
     get_storage_info(info);

@@ -41,8 +41,14 @@ void healthd_board_init(struct healthd_config*) {
     // use defaults
 }
 
-int healthd_board_battery_update(struct android::BatteryProperties*) {
+int healthd_board_battery_update(struct android::BatteryProperties* props) {
     // return 0 to log periodic polled battery status to kernel log
+    props->chargerAcOnline = true;
+    props->batteryPresent = true;
+    props->batteryStatus = android::BATTERY_STATUS_CHARGING;
+    props->batteryHealth = android::BATTERY_HEALTH_GOOD;
+    props->batteryFullCharge = 100;
+    props->batteryLevel = 100;
     return 0;
 }
 
